@@ -5,7 +5,6 @@ const getContacts = (state) => state.contacts.items;
 const getFilter = (state) => state.contacts.filter;
 
 const getLoading = (state) => {
-  console.log(state.contacts.loading);
   return state.contacts.loading;
 };
 
