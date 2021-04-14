@@ -32,7 +32,6 @@ const ContactForm = ({ contacts, onAdd }) => {
     isAlreadyContact()
       ? alert(`${item.name} is already in contacts.`)
       : onAdd(item);
-    // item = { name: "", number: "" };
   };
 
   return (
