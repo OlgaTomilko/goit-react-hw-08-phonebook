@@ -26,6 +26,7 @@ const UserMenu = ({ avatar, name, onLogout }) => (
     </button>
   </div>
 );
+
 const mapStateToProps = (state) => ({
   name: authSelectors.getUsername(state),
   avatar: defaultAvatar,

@@ -27,25 +27,21 @@ const ContactForm = ({ contacts, onAdd }) => {
     return Names.includes(item.name);
   };
 
-  const onSave = () => {
+  const onSave = (e) => {
+    e.preventDefault();
     isAlreadyContact()
       ? alert(`${item.name} is already in contacts.`)
       : onAdd(item);
+    // item = { name: "", number: "" };
   };
 
   return (
-    <form className={classes.form}>
+    <form className={classes.form} onSubmit={onSave}>
       <label>Name</label>
       <input type="text" onChange={onInputChange} id="name"></input>
       <label>Number</label>
       <input type="text" onChange={onInputChange} id="number"></input>
-      <Button
-        variant="contained"
-        color="primary"
-        size="small"
-        type="button"
-        onClick={onSave}
-      >
+      <Button variant="contained" color="primary" size="small" type="submit">
         Add contact
       </Button>
     </form>

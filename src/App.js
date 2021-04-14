@@ -1,13 +1,16 @@
 import "./App.css";
-import React, { Component } from "react";
+import React, { Component, Suspense, lazy } from "react";
 import { Switch, Route } from "react-router-dom";
-import AppBar from "./components/AppBar";
-import HomeView from "./views/HomeView";
-import Phonebook from "./components/Phonebook/Phonebook";
-import RegisterView from "./views/RegisterView";
-import LoginView from "./views/LoginView";
-import { authOperations } from "./redux/auth";
 import { connect } from "react-redux";
+import AppBar from "./components/AppBar";
+import { authOperations } from "./redux/auth";
+import PrivateRoute from "./components/PrivateRoute";
+import PublicRoute from "./components/PublicRoute";
+
+const HomeView = lazy(() => import("./views/HomeView"));
+const RegisterView = lazy(() => import("./views/RegisterView"));
+const LoginView = lazy(() => import("./views/LoginView"));
+const Phonebook = lazy(() => import("./components/Phonebook/Phonebook"));
 
 class App extends Component {
   componentDidMount() {
@@ -18,13 +21,29 @@ class App extends Component {
     return (
       <>
         <AppBar />
-
-        <Switch>
-          <Route exact path="/" component={HomeView} />
-          <Route path="/register" component={RegisterView} />
-          <Route path="/login" component={LoginView} />
-          <Route path="/contacts" component={Phonebook} />
-        </Switch>
+        <Suspense fallback={<p>Загружаем...</p>}>
+          <Switch>
+            {/* <Route exact path="/" component={HomeView} /> */}
+            <PublicRoute exact path="/" component={HomeView} />
+            <PublicRoute
+              path="/register"
+              restricted
+              redirectTo="/contacts"
+              component={RegisterView}
+            />
+            <PublicRoute
+              path="/login"
+              restricted
+              redirectTo="/contacts"
+              component={LoginView}
+            />
+            <PrivateRoute
+              path="/contacts"
+              redirectTo="/login"
+              component={Phonebook}
+            />
+          </Switch>
+        </Suspense>
       </>
     );
   }
